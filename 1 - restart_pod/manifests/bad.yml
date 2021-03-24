@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bad-pod
+spec:
+  selector:
+    matchLabels:
+      app_name: myapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app_name: myapp
+    spec:
+      containers:
+        - name: shell
+          image: centos:7
+          command:
+            - sh
+            - '-c'
+            - echo "Iam here now i am exiting "

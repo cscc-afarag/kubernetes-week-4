@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: volumeissue
+spec:
+  selector:
+    matchLabels:
+      app: volumeissue
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: volumeissue
+    spec:
+      containers:
+        - name: producer
+          image: centos:7
+          command:
+            - sh
+            - '-c'
+            - "printf 'consumer writing out data to volume' > /tmp/out/data; sleep 5000"
+          volumeMounts:
+            - name: sharedmount
+              mountPath: /tmp/out
+        - name: consumer
+          image: centos:7
+          command:
+            - sh
+            - '-c'
+            - "cat /tmp/in/data; sleep 5000"
+          volumeMounts:
+            - name: sharedmount
+              mountPath: /tmp/data
+      volumes:
+      - name: sharedmount
+        emptyDir: {}

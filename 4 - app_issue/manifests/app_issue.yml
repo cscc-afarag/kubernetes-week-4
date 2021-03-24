@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: oops
+spec:
+  selector:
+    matchLabels:
+      app: oops
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: oops
+    spec:
+      containers:
+        - name: oopsapp
+          image: centos:7
+          command:
+            - sh
+            - '-c'
+            - "for x in {1..20}; do echo working here at $x ; sleep 1; done; echo exiting; exit"
